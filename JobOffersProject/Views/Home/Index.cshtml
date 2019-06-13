@@ -1,0 +1,41 @@
+﻿@model IEnumerable<JobOffersProject.Models.Categories>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron" >
+    <h1>Welcom</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+
+@foreach(var item in Model)
+{
+    <div class="panel panel-default" style="padding:15px;background-color:aliceblue;margin:10px">
+        <h1 class="panel-heading">@Html.DisplayFor(ModelItem=>item.CategoryName)</h1>
+        <h5>@Html.DisplayFor(ModelItem=>item.Description)</h5>
+
+        <div class="row">
+            @foreach (var job in item.Jobs)
+            {
+                <div class="col-md-4" style="padding-left: 10px ; padding-bottom:10px">
+                    <div class="card" style="width:300px">
+                        <img src="~/Uploads/@job.JobImage" class="card-img-top"
+                             alt="@job.JobDescription" style="height: 400px;width:299px;">
+                        <div class="card-body">
+                            <h5 class="card-title">@job.JobName</h5>
+                            <p class="card-text">
+                                @*@job.JobDescription*@
+                                @Html.Raw(HttpUtility.HtmlDecode(job.JobDescription))
+
+                            </p>
+                            <!--jobId -> the same name of parameter of details fun-->
+                            @Html.ActionLink("Details", "Details", new { JobId = job.Id } , new { @class="btn btn-primary"})
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

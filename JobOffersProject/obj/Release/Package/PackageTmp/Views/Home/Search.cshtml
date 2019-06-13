@@ -1,0 +1,29 @@
+﻿@model IEnumerable<JobOffersProject.Models.Job>
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="panel panel-default" style="padding:15px;background-color:aliceblue;margin:10px">
+    <h1 class="panel-heading">Search Results</h1>
+
+    <div class="row">
+        @foreach (var job in Model)
+        {
+            <div class="col-md-4" style="padding-left: 10px ; padding-bottom:10px">
+                <div class="card" style="width:300px">
+                    <img src="~/Uploads/@job.JobImage" class="card-img-top"
+                         alt="@job.JobDescription" style="height: 400px;width:299px;">
+                    <div class="card-body">
+                        <h5 class="card-title">@job.JobName</h5>
+                        <p class="card-text">
+                            @job.JobDescription
+                        </p>
+                        <!--jobId -> the same name of parameter of details fun-->
+                        @Html.ActionLink("Details", "Details", new { JobId = job.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

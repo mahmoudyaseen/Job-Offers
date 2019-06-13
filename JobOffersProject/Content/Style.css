@@ -1,0 +1,19 @@
+﻿.myfooter{
+    background-color:gainsboro;
+    padding:10px;
+}
+
+
+.subfooter {
+    background-color: black;
+    color:white;
+    height:40px;
+    padding: 10px;
+    text-align:center;
+}
+
+ul
+{
+    list-style-type:none;
+}
+

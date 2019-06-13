@@ -1,0 +1,115 @@
+﻿@model JobOffersProject.Models.Job
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit" , "Jobs" , FormMethod.Post , new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Job</h4>
+        <hr />
+
+        <!--form to alert-->
+        <div class="form-horizontal">
+            <div class="alert alert-danger" id="div-err" style="display:none">
+                <span id="span-err">
+
+                </span>
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)        
+        <!--keep image name -> use it if he want the old image this field will send as it is , this field name\id will be JobImage-->
+        @Html.HiddenFor(model => model.JobImage) 
+        @Html.HiddenFor(model => model.UserId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.JobName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.JobName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.JobName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.JobDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.JobDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.JobDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.JobImage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="upload" id="image-input"/>
+                @Html.ValidationMessageFor(model => model.JobImage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoriesId, "CategoriesId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CategoriesId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CategoriesId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" id="save-btn" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<!--here u should call jquery to execute scripts or this is already in mainlayout add an script section only-->
+@section Script
+{
+    <script>
+        $(function () {
+            $("#save-btn").click(function () {
+
+                //makesure he choose something
+                //if ($("#image-input").val() == "") {
+                //    $("#div-err").fadeIn();
+                //    $("#span-err").text("Please Choose image");
+                //    return false; //to cancel the submit fun -> with out this u dont make any change and data will sent as it is without image
+                //}
+                
+                //makesure if he choose something
+                if ($("#image-input").val() != "") {
+                    //makesure he choose an image
+                    var filename = document.getElementById("image-input").value;
+                    var extension = filename.substr(filename.lastIndexOf('.') + 1);
+                    var validExtensions = ['jpg', 'png', 'gif', 'bmp','jpeg'];
+                    if ($.inArray(extension, validExtensions) == -1) {
+                        $("#div-err").fadeIn();
+                        $("#span-err").text("Please Choose valid image");
+                        return false
+                    }
+
+                    //makesure size of image < 2 mega byte
+                    var filesize = document.getElementById("image-input").files[0].size / 1024 / 1024;
+                    if (filesize > 2) {
+                        $("#div-err").fadeIn();
+                        $("#span-err").text("Please Choose image of size is less than 2 mega byte");
+                        return false; 
+                    }
+                }
+
+            });
+        });
+    </script>
+}
